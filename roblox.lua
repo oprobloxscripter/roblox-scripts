@@ -12,6 +12,58 @@ local plrid = plr.UserId
 local plrchr = plr.Character
 local plrage = plr.AccountAge
 local plrcount = #game.Players:GetPlayers()
+-- Reference to the Frame
+local frame = script.Parent
+
+-- Variables to store the mouse and frame positions
+local dragging = false
+local dragInput, mousePos, framePos
+
+-- Function to start dragging
+local function startDrag(input)
+    dragging = true
+    mousePos = input.Position
+    framePos = Vector2.new(frame.Position.X.Offset, frame.Position.Y.Offset)
+    input.Changed:Connect(function()
+        if input.UserInputState == Enum.UserInputState.End then
+            dragging = false
+        end
+    end)
+end
+
+-- Function to update the position of the frame
+local function updateDrag(input)
+    if dragging then
+        local delta = input.Position - mousePos
+        frame.Position = UDim2.new(frame.Position.X.Scale, framePos.X + delta.X, frame.Position.Y.Scale, framePos.Y + delta.Y)
+    end
+end
+
+-- Connect to Input events
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        startDrag(input)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- Update the position as the mouse moves
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        updateDrag(input)
+    end
+end)
 
 local Tab = Window:NewTab("My Hub/Scripts")
 local Section = Tab:NewSection("My Hub")
